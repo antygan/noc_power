@@ -125,6 +125,49 @@ def instantiate(ckpt_dir=None):
     for obj in root.descendants():
         obj.connectPorts()
 
+    # # Diagnostic dump: print all root descendants with parent info
+    # desc = list(root.descendants())
+    # print(f"=== Root.descendants() count={len(desc)} ===")
+    # for i, obj in enumerate(desc):
+    #     try:
+    #         p = obj.path()
+    #     except Exception:
+    #         p = str(obj)
+    #     try:
+    #         parent = getattr(obj, '_parent', None)
+    #         parent_path = parent.path() if parent is not None else None
+    #     except Exception:
+    #         parent = None
+    #         parent_path = None
+    #     print(f"desc[{i}]: {p}, parent_path={parent_path}, parent_obj={parent}")
+    # sys.stdout.flush()
+
+    # # Now create CC objects and connect ports with per-object diagnostics
+    # for obj in desc:
+    #     try:
+    #         p = obj.path()
+    #     except Exception:
+    #         p = str(obj)
+    #     try:
+    #         parent = getattr(obj, '_parent', None)
+    #     except Exception:
+    #         parent = None
+    #     print(f"createCCObject: {p}, parent={parent}")
+    #     sys.stdout.flush()
+    #     obj.createCCObject()
+    # for obj in desc:
+    #     try:
+    #         p = obj.path()
+    #     except Exception:
+    #         p = str(obj)
+    #     try:
+    #         parent = getattr(obj, '_parent', None)
+    #     except Exception:
+    #         parent = None
+    #     print(f"connectPorts: {p}, parent={parent}")
+    #     sys.stdout.flush()
+    #     obj.connectPorts()
+
     # Do a second pass to finish initializing the sim objects
     for obj in root.descendants():
         obj.init()

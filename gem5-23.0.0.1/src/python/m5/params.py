@@ -2186,6 +2186,79 @@ class PortRef(object):
         peer_port = peer.simobj.getPort(peer.name, peer.index)
         port.bind(peer_port)
 
+        # # Verbose diagnostic info to trace port binding progress
+        # try:
+        #     simobj_path = self.simobj.path()
+        # except Exception:
+        #     simobj_path = str(self.simobj)
+        # try:
+        #     peer_simobj_path = peer.simobj.path()
+        # except Exception:
+        #     peer_simobj_path = str(peer.simobj)
+        # # Parent info
+        # simobj_parent = getattr(self.simobj, '_parent', None)
+        # peer_parent = getattr(peer.simobj, '_parent', None)
+        # root = None
+        # try:
+        #     from m5.objects import Root as _Root
+        #     root = _Root.getInstance()
+        # except Exception:
+        #     root = None
+        # def _in_root(obj):
+        #     if not root:
+        #         return False
+        #     try:
+        #         return obj in list(root.descendants())
+        #     except Exception:
+        #         return False
+        # # Also log ccConnect attempts to a file so we can diagnose orphan
+        # # errors even if stdout/stderr are lost due to a C++ exception.
+        # try:
+        #     with open('/tmp/ccconnect.log', 'a') as _ccf:
+        #         _ccf.write(
+        #             f"ccConnect_invoked: simobj={simobj_path}, name={self.name}, index={self.index}, ")
+        #         _ccf.write(f"peer={peer_simobj_path}, peer_name={peer.name}, peer_index={peer.index}\n")
+        #         _ccf.write(f"  sim_parent={simobj_parent}, peer_parent={peer_parent}\n")
+        #         _ccf.flush()
+        # except Exception:
+        #     pass
+
+        # print(f"ccConnect: attempting to bind {simobj_path}.{self.name}[{self.index}] -> {peer_simobj_path}.{peer.name}[{peer.index}]")
+        # print(f"  simobj._parent={simobj_parent}, in_root={_in_root(self.simobj)}")
+        # print(f"  peer.simobj._parent={peer_parent}, in_root={_in_root(peer.simobj)}")
+
+        # try:
+        #     port = self.simobj.getPort(self.name, self.index)
+        #     peer_port = peer.simobj.getPort(peer.name, peer.index)
+        #     port.bind(peer_port)
+        # except Exception as e:
+        #     # If either side is not attached into the Root's object tree,
+        #     # this is likely an orphan port resulting from a swapped-out CPU
+        #     # or intentionally-unparented object; ignore the connect and warn.
+        #     try:
+        #         simobj_in_root = _in_root(self.simobj)
+        #     except Exception:
+        #         simobj_in_root = False
+        #     try:
+        #         peer_in_root = _in_root(peer.simobj)
+        #     except Exception:
+        #         peer_in_root = False
+
+        #     if not simobj_in_root or not peer_in_root:
+        #         print("Warning: ignored port bind for object(s) not in root during ccConnect:")
+        #         print(f"  simobj: {simobj_path}, in_root={simobj_in_root}, parent={simobj_parent}")
+        #         print(f"  peer:   {peer_simobj_path}, in_root={peer_in_root}, parent={peer_parent}")
+        #         # Mark as connected so we don't retry and return safely
+        #         self.ccConnected = True
+        #         return
+
+        #     # Otherwise, emit diagnostic and re-raise for real errors
+        #     print("Error during ccConnect (exception during bind):")
+        #     print(f"  port owner: {simobj_path}, port name: {self.name}, index: {self.index}")
+        #     print(f"  peer owner: {peer_simobj_path}, peer name: {peer.name}, peer index: {peer.index}")
+        #     print("  Exception:", e)
+        #     raise
+
         self.ccConnected = True
 
 
